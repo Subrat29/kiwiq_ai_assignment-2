@@ -5,15 +5,27 @@ const Sidebar = ({ setElements }) => {
     const newElement =
       type === 'BarChart'
         ? { type, data: [10, 20, 30, 40] }
-        : { type, text: 'New Text Element' };
+        : type === 'LineChart'
+        ? { type, data: [5, 15, 25, 35, 45] }
+        : type === 'PieChart'
+        ? { type, data: [20, 30, 50] }
+        : type === 'Subheading'
+        ? { type, text: 'New Subheading' }
+        : type === 'Heading'
+        ? { type, text: 'New Heading' }
+        : { type, text: 'New Paragraph' };
     setElements((els) => [...els, newElement]);
   };
 
   return (
-    <div className="w-1/4 bg-white p-4 border-r-2 border-gray-200">
+    <div className="bg-white p-4 border-r-2 border-gray-200">
       <h3 className="text-lg font-bold mb-4">Components</h3>
       <button onClick={() => addElement('BarChart')} className="block w-full py-2 px-4 bg-blue-600 text-white rounded mb-2">Add Bar Chart</button>
-      <button onClick={() => addElement('Text')} className="block w-full py-2 px-4 bg-green-600 text-white rounded">Add Text</button>
+      <button onClick={() => addElement('LineChart')} className="block w-full py-2 px-4 bg-purple-600 text-white rounded mb-2">Add Line Chart</button>
+      <button onClick={() => addElement('PieChart')} className="block w-full py-2 px-4 bg-pink-600 text-white rounded mb-2">Add Pie Chart</button>
+      <button onClick={() => addElement('Subheading')} className="block w-full py-2 px-4 bg-indigo-600 text-white rounded mb-2">Add Subheading</button>
+      <button onClick={() => addElement('Heading')} className="block w-full py-2 px-4 bg-green-600 text-white rounded mb-2">Add Heading</button>
+      <button onClick={() => addElement('Text')} className="block w-full py-2 px-4 bg-yellow-600 text-white rounded">Add Paragraph</button>
     </div>
   );
 };
