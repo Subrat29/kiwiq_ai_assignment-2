@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Sidebar from './Sidebar';
-import BarChart from './D3Charts/BarChart';
-import LineChart from './D3Charts/LineChart';
-import PieChart from './D3Charts/PieChart';
+import Sidebar from './ReportGenerator/Sidebar';
+import BarChart from './ReportGenerator/D3Charts/BarChart';
+import LineChart from './ReportGenerator/D3Charts/LineChart';
+import PieChart from './ReportGenerator/D3Charts/PieChart';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
