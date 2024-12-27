@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import WorkflowBuilder from './components/WorkflowBuilder';
 import ReportGenerator from './components/ReportGenerator';
-
 const App = () => {
 
   return (

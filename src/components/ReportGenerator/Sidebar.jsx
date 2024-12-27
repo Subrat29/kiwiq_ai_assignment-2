@@ -1,33 +1,47 @@
-import React from 'react';
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Heading, BarChart, PieChart, LineChart, Text } from 'lucide-react'
 
-const Sidebar = ({ setElements }) => {
+const components = [
+  { type: 'Heading', icon: Heading, label: 'Heading' },
+  { type: 'Subheading', icon: Heading, label: 'Subheading' },
+  { type: 'Text', icon: Text, label: 'Paragraph' },
+  { type: 'BarChart', icon: BarChart, label: 'Bar Chart' },
+  { type: 'PieChart', icon: PieChart, label: 'Pie Chart' },
+  { type: 'LineChart', icon: LineChart, label: 'Line Chart' },
+]
+
+export function Sidebar({ setElements }) {
   const addElement = (type) => {
-    const newElement =
-      type === 'BarChart'
-        ? { type, data: [10, 20, 30, 40] }
-        : type === 'LineChart'
-        ? { type, data: [5, 15, 25, 35, 45] }
-        : type === 'PieChart'
-        ? { type, data: [20, 30, 50] }
-        : type === 'Subheading'
-        ? { type, text: 'New Subheading' }
-        : type === 'Heading'
-        ? { type, text: 'New Heading' }
-        : { type, text: 'New Paragraph' };
-    setElements((els) => [...els, newElement]);
-  };
+    const newElement = {
+      type,
+      ...(type.includes('Chart')
+        ? { data: [10, 20, 30, 40], labels: ['A', 'B', 'C', 'D'] }
+        : { text: `New ${type}` }),
+    }
+    setElements((els) => [...els, newElement])
+  }
 
   return (
-    <div className="bg-white p-4 border-r-2 border-gray-200">
-      <h3 className="text-lg font-bold mb-4">Add Components</h3>
-      <button onClick={() => addElement('Heading')} className="block w-full py-2 px-4 bg-green-600 text-white rounded mb-2">Heading</button>
-      <button onClick={() => addElement('Subheading')} className="block w-full py-2 px-4 bg-indigo-600 text-white rounded mb-2">Subheading</button>
-      <button onClick={() => addElement('Text')} className="block w-full py-2 px-4 bg-yellow-600 text-white rounded mb-2">Paragraph</button>
-      <button onClick={() => addElement('BarChart')} className="block w-full py-2 px-4 bg-blue-600 text-white rounded mb-2">Bar Chart</button>
-      <button onClick={() => addElement('PieChart')} className="block w-full py-2 px-4 bg-pink-600 text-white rounded mb-2">Pie Chart</button>
-      <button onClick={() => addElement('LineChart')} className="block w-full py-2 px-4 bg-purple-600 text-white rounded mb-2">Line Chart</button>
+    <div className="w-64 border-r bg-background">
+      <ScrollArea className="h-full">
+        <div className="p-4 space-y-4">
+          <h3 className="text-lg font-semibold mb-4">Add Components</h3>
+          {components.map((component) => (
+            <Button
+              key={component.type}
+              onClick={() => addElement(component.type)}
+              className="w-full justify-start"
+              variant="outline"
+            >
+              <component.icon className="mr-2 h-4 w-4" />
+              {component.label}
+            </Button>
+          ))}
+        </div>
+      </ScrollArea>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
