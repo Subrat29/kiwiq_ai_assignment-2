@@ -1,15 +1,15 @@
-'use client'
-
 import React, { useState } from 'react'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Button } from '@/components/ui/button'
 import { Sidebar } from './ReportGenerator/Sidebar'
 import { DraggableElement } from './ReportGenerator/draggable-element'
+import { Menu, X } from 'lucide-react'  // Added Menu import
 
 export default function ReportGenerator() {
   const [elements, setElements] = useState([])
   const [isPreview, setIsPreview] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   const updateElement = (index, newData) => {
     setElements((els) => els.map((el, i) => (i === index ? { ...el, ...newData } : el)))
@@ -28,18 +28,36 @@ export default function ReportGenerator() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex h-screen overflow-hidden">
-        <Sidebar setElements={setElements} />
-        <div className="flex-grow overflow-auto bg-background p-6">
-          <div className="mb-6">
+      <div className="flex flex-col md:flex-row h-screen overflow-hidden">
+        <Sidebar
+          setElements={setElements}
+          isPreview={isPreview}
+          isMobileOpen={isMobileOpen}
+          onCloseMobile={() => setIsMobileOpen(false)}
+        />
+
+        <div className="flex-grow overflow-auto bg-background p-4 md:p-6">
+          <div className="mb-6 flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setIsMobileOpen(!isMobileOpen)}
+              data-mobile-trigger="true"
+            >
+              {isMobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </Button>
+
             <Button
               onClick={() => setIsPreview(!isPreview)}
               variant={isPreview ? "secondary" : "default"}
+              className="w-24"
             >
               {isPreview ? 'Edit' : 'Preview'}
             </Button>
           </div>
-          <div className="space-y-4">
+
+          <div className={`max-w-4xl mx-auto ${isPreview ? 'preview-mode' : ''}`}>
             {elements.map((el, index) => (
               <DraggableElement
                 key={index}
@@ -57,4 +75,3 @@ export default function ReportGenerator() {
     </DndProvider>
   )
 }
-
