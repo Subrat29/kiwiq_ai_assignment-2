@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -11,56 +11,60 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { BaseNode } from "./base-node"
-import { ArrowDownToLine, ImageIcon } from 'lucide-react'
+import { ArrowUpToLine } from 'lucide-react'
 
 export const OutputNode = ({ id, data }) => {
-  const { outputName, outputType, updateField } = data
-
-  const [currName, setCurrName] = useState(outputName || id.replace('customOutput-', 'output_'))
-  const [type, setType] = useState(outputType || 'Text')
-
-  const handleUpdateField = useCallback((fieldName, value) => {
-    if (updateField) {
-      updateField(fieldName, value)
-    }
-  }, [updateField])
-
-  useEffect(() => {
-    handleUpdateField('outputName', currName)
-    handleUpdateField('outputType', type)
-  }, [currName, type, handleUpdateField])
+  const outputName = data?.outputName || 'output'
+  const outputType = data?.outputType || 'string'
 
   return (
     <BaseNode
       id={id}
       data={{
-        ...data,
-        icon: type === 'Text' ? <ArrowDownToLine className="h-4 w-4" /> : <ImageIcon className="h-4 w-4" />
+        icon: <ArrowUpToLine className="h-4 w-4" />,
+        subtitle: "Flow Basics",
+        outputName,
+        outputType,
       }}
       title="Output"
+      description="Exit point for passing values out of automation. Useful for webhooks and nested automations."
       inputs={[{ id: 'input', type: 'target' }]}
-      outputs={[{ id: 'output', type: 'source' }]}
-      className="border-green-200 bg-green-50/50"
+      className="border-green-100"
     >
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="name" className="text-sm font-medium">
+              Output name
+            </Label>
+          </div>
           <Input
             id="name"
-            value={currName}
-            onChange={(e) => setCurrName(e.target.value)}
-            className="h-8"
+            value={outputName}
+            onChange={(e) => data.updateField('outputName', e.target.value)}
+            className="h-9"
+            placeholder="Enter output name"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="type">Type</Label>
-          <Select value={type} onValueChange={setType}>
-            <SelectTrigger id="type" className="h-8">
+          <div className="flex items-center gap-2">
+            <Label htmlFor="type" className="text-sm font-medium">
+              Output type
+            </Label>
+          </div>
+          <Select 
+            value={outputType} 
+            onValueChange={(value) => data.updateField('outputType', value)}
+          >
+            <SelectTrigger id="type" className="h-9">
               <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Text">Text</SelectItem>
-              <SelectItem value="Image">Image</SelectItem>
+              <SelectItem value="string">String</SelectItem>
+              <SelectItem value="number">Number</SelectItem>
+              <SelectItem value="boolean">Boolean</SelectItem>
+              <SelectItem value="object">Object</SelectItem>
+              <SelectItem value="array">Array</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -68,3 +72,4 @@ export const OutputNode = ({ id, data }) => {
     </BaseNode>
   )
 }
+

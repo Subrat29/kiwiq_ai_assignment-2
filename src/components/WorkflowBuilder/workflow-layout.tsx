@@ -24,6 +24,9 @@ import {
   TooltipProvider, 
   TooltipTrigger 
 } from "@/components/ui/tooltip"
+import { useDispatch } from 'react-redux'
+import { addNode } from '@/redux/flowSlice'
+import { useNodeId } from '@/hooks/useNodeId'
 
 interface Workflow {
   id: string
@@ -33,7 +36,7 @@ interface Workflow {
   edges: any[]
 }
 
-export function WorkflowLayout({ children, onNodeClick }: { children: React.ReactNode, onNodeClick: (node: any) => void }) {
+export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   const [workflows, setWorkflows] = React.useState<Workflow[]>([
     { id: "1", name: "Workflow 1", lastModified: new Date(), nodes: [], edges: [] },
   ])
@@ -139,6 +142,19 @@ export function WorkflowLayout({ children, onNodeClick }: { children: React.Reac
     node.label.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  const dispatch = useDispatch()
+  const getNodeId = useNodeId()
+
+  const handleAddNode = (nodeData: { type: string, label: string }) => {
+    const newNode = {
+      id: getNodeId(nodeData.type),
+      type: nodeData.type,
+      position: { x: 100, y: 100 },
+      data: { label: `${nodeData.label} node` },
+    }
+    dispatch(addNode(newNode))
+  }
+
   return (
     <TooltipProvider>
       <div className="flex h-screen flex-col">
@@ -219,7 +235,7 @@ export function WorkflowLayout({ children, onNodeClick }: { children: React.Reac
                             key={node.type}
                             type={node.type}
                             label={node.label}
-                            onClick={onNodeClick}
+                            onClick={handleAddNode}
                           />
                         ))}
                       </NodeCategory>
@@ -235,7 +251,7 @@ export function WorkflowLayout({ children, onNodeClick }: { children: React.Reac
                           type="subflow"
                           label={workflow.name}
                           data={workflow}
-                          onClick={onNodeClick}
+                          onClick={handleAddNode}
                         />
                       ))}
                     </div>
@@ -386,3 +402,4 @@ export function WorkflowLayout({ children, onNodeClick }: { children: React.Reac
     </TooltipProvider>
   )
 }
+
