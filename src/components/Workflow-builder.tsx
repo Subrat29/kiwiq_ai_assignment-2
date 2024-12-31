@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react'
 import { WorkflowLayout } from "./WorkflowBuilder/workflow-layout"
-import { PipelineUI } from "./WorkflowBuilder/ui"
+import { PipelineUI } from "./WorkflowBuilder/pipeline-ui"
 
 export default function WorkflowBuilder() {
   const [workflows, setWorkflows] = useState([

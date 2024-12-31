@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactFlow, {
   Controls,
@@ -8,6 +8,9 @@ import ReactFlow, {
   Connection,
   Edge,
   Node,
+  Panel,
+  MarkerType,
+  ReactFlowProvider,
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { Maximize2, Minimize2 } from 'lucide-react'
@@ -15,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Slider } from '@/components/ui/slider'
 import { nodeTypes } from './nodes'
+import { TemplateOverview } from './template-overview'
 import {
   selectNodes,
   selectEdges,
@@ -24,6 +28,7 @@ import {
   addNode,
 } from '@/redux/flowSlice'
 import { useNodeId } from '@/hooks/useNodeId'
+import { defaultWorkflow } from '@/config/default-workflow'
 
 const proOptions = { hideAttribution: true }
 
@@ -96,54 +101,70 @@ export const PipelineUI = () => {
 
   const toggleFullScreen = useCallback(() => setIsFullScreen((prev) => !prev), [])
 
+  useEffect(() => {
+    dispatch({ type: 'flow/setInitialState', payload: defaultWorkflow })
+  }, [dispatch])
+
   return (
-    <div
-      ref={reactFlowWrapper}
-      className={`relative ${isFullScreen ? 'w-full h-screen' : 'w-full h-[calc(100vh-7rem)]'} transition-all`}
-    >
-      {/* <div className="absolute top-4 right-4 z-10 flex items-center gap-3 bg-white p-2 rounded-md shadow">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleFullScreen}
-          className="text-gray-500 hover:text-gray-700 transition"
-          aria-label="Toggle Fullscreen"
-        >
-          {isFullScreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
-        </Button>
-
-        <div className="flex items-center space-x-2">
-          <Label htmlFor="grid-size" className="text-sm text-gray-600">Grid:</Label>
-          <Slider
-            id="grid-size"
-            min={10}
-            max={40}
-            step={5}
-            value={[gridSize]}
-            onValueChange={([value]) => setGridSize(value)}
-            className="w-24"
-          />
-        </div>
-      </div> */}
-
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onInit={setReactFlowInstance}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        nodeTypes={nodeTypes}
-        fitView
-        attributionPosition="bottom-left"
-        proOptions={proOptions}
+    <ReactFlowProvider>
+      <div
+        ref={reactFlowWrapper}
+        className={`relative ${isFullScreen ? 'w-full h-screen' : 'w-full h-[calc(100vh-7rem)]'} transition-all`}
       >
-        <Background gap={gridSize} size={1} />
-        <Controls />
-      </ReactFlow>
-    </div>
+        <Panel position="top-right" className="z-10">
+          <div className="flex items-center gap-3 bg-white p-2 rounded-md shadow-sm">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleFullScreen}
+              className="text-gray-500 hover:text-gray-700 transition"
+              aria-label="Toggle Fullscreen"
+            >
+              {isFullScreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+            </Button>
+
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="grid-size" className="text-sm text-gray-600">Grid:</Label>
+              <Slider
+                id="grid-size"
+                min={10}
+                max={40}
+                step={5}
+                value={[gridSize]}
+                onValueChange={([value]) => setGridSize(value)}
+                className="w-24"
+              />
+            </div>
+          </div>
+        </Panel>
+
+        {/* <TemplateOverview /> */}
+
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onInit={setReactFlowInstance}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          nodeTypes={nodeTypes}
+          defaultEdgeOptions={{
+            type: 'smoothstep',
+            animated: true,
+            style: { strokeDasharray: '5,5' },
+            markerEnd: { type: MarkerType.Arrow },
+          }}
+          fitView
+          attributionPosition="bottom-left"
+          proOptions={proOptions}
+        >
+          <Background gap={gridSize} size={1} />
+          <Controls />
+        </ReactFlow>
+      </div>
+    </ReactFlowProvider>
   )
 }
 

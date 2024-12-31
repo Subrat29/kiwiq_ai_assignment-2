@@ -25,8 +25,10 @@ import {
   TooltipTrigger 
 } from "@/components/ui/tooltip"
 import { useDispatch } from 'react-redux'
-import { addNode } from '@/redux/flowSlice'
+import { addNode, selectWorkflowName } from '@/redux/flowSlice'
 import { useNodeId } from '@/hooks/useNodeId'
+import { useSelector } from 'react-redux'
+import { ClipboardList, ListTree, FileText, Bot, StickyNote, ArrowDownToLine, ArrowUpToLine } from 'lucide-react'
 
 interface Workflow {
   id: string
@@ -38,7 +40,7 @@ interface Workflow {
 
 export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   const [workflows, setWorkflows] = React.useState<Workflow[]>([
-    { id: "1", name: "Workflow 1", lastModified: new Date(), nodes: [], edges: [] },
+    { id: "1", name: "Employee Satisfaction Survey Analysis", lastModified: new Date(), nodes: [], edges: [] },
   ])
   const [activeWorkflow, setActiveWorkflow] = React.useState(workflows[0])
   const [activeTabIndex, setActiveTabIndex] = React.useState(0)
@@ -48,6 +50,8 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   const [newWorkflowName, setNewWorkflowName] = React.useState("")
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+
+  const workflowName = useSelector(selectWorkflowName)
 
   const createNewWorkflow = () => {
     const newWorkflow: Workflow = {
@@ -60,7 +64,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     setWorkflows([...workflows, newWorkflow])
     setActiveWorkflow(newWorkflow)
     setActiveTabIndex(workflows.length)
-    
+
     // Scroll to the new tab after it's created
     setTimeout(() => {
       const container = scrollContainerRef.current
@@ -129,13 +133,14 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   }
 
   const nodeTypes = [
-    { type: "input", label: "Input" },
-    { type: "output", label: "Output" },
-    { type: "llm", label: "LLM" },
-    { type: "transform", label: "Transform" },
-    { type: "filter", label: "Filter" },
-    { type: "api", label: "API" },
-    { type: "aggregator", label: "Aggregator" },
+    { type: "input", label: "Input", icon: <ArrowDownToLine className="h-4 w-4" /> },
+    { type: "output", label: "Output", icon: <ArrowUpToLine className="h-4 w-4" /> },
+    { type: "typeform", label: "Typeform Submission Reader", icon: <ClipboardList className="h-4 w-4" /> },
+    { type: "combineLists", label: "Combine Lists", icon: <ListTree className="h-4 w-4" /> },
+    { type: "joinListItems", label: "Join List Items", icon: <ListTree className="h-4 w-4" /> },
+    { type: "askAI", label: "Ask AI", icon: <Bot className="h-4 w-4" /> },
+    { type: "generateFile", label: "Generate File", icon: <FileText className="h-4 w-4" /> },
+    { type: "notes", label: "Notes", icon: <StickyNote className="h-4 w-4" /> },
   ]
 
   const filteredNodes = nodeTypes.filter((node) =>
@@ -235,6 +240,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
                             key={node.type}
                             type={node.type}
                             label={node.label}
+                            icon={node.icon}
                             onClick={handleAddNode}
                           />
                         ))}
