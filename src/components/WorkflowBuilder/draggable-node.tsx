@@ -9,7 +9,11 @@ import {
   ListTree, 
   ClipboardList,
   StickyNote,
-  Box 
+  Box,
+  Linkedin,
+  Users,
+  BarChart,
+  LineChart
 } from 'lucide-react';
 
 const nodeConfig = {
@@ -68,6 +72,34 @@ const nodeConfig = {
     borderColor: 'border-yellow-200', 
     iconColor: 'text-yellow-500',
     icon: <StickyNote className="h-4 w-4" /> 
+  },
+  channel: { 
+    color: 'bg-blue-50', 
+    hoverColor: 'hover:bg-blue-100',
+    borderColor: 'border-blue-200', 
+    iconColor: 'text-blue-500',
+    icon: <Linkedin className="h-4 w-4" /> 
+  },
+  segment: { 
+    color: 'bg-blue-50', 
+    hoverColor: 'hover:bg-blue-100',
+    borderColor: 'border-blue-200', 
+    iconColor: 'text-blue-500',
+    icon: <Users className="h-4 w-4" /> 
+  },
+  metric: { 
+    color: 'bg-blue-50', 
+    hoverColor: 'hover:bg-blue-100',
+    borderColor: 'border-blue-200', 
+    iconColor: 'text-blue-500',
+    icon: <BarChart className="h-4 w-4" /> 
+  },
+  analysis: { 
+    color: 'bg-blue-50', 
+    hoverColor: 'hover:bg-blue-100',
+    borderColor: 'border-blue-200', 
+    iconColor: 'text-blue-500',
+    icon: <LineChart className="h-4 w-4" /> 
   },
   default: { 
     color: 'bg-gray-50', 

@@ -24,7 +24,7 @@ export const defaultWorkflow = {
     {
       id: "ai-1",
       type: "askAI",
-      position: { x: 500, y: 300 },
+      position: { x: 500, y: 350 },
       data: {
         prompt: `You are an expert HR and people's manager that specializes in gathering employee insights and feedback.
                 I have provided you data from an employee satisfaction survey in the context.
@@ -34,15 +34,16 @@ export const defaultWorkflow = {
     {
       id: "file-1",
       type: "generateFile",
-      position: { x: 900, y: 300 },
+      position: { x: 900, y: 350 },
       data: { fileName: "Employee Satisfaction Report", fileType: "pdf" },
     },
     {
       id: "notes-1",
       type: "notes",
-      position: { x: 100, y: 300 },
+      position: { x: 100, y: 350 },
       data: {
         notes: `Template Overview:
+• This workflow automates the analysis of employee satisfaction survey responses.
 
 Inputs Required:
 1. Typeform Authentication

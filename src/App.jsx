@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
-import WorkflowBuilder from './components/Workflow-builder';
-import ReportGenerator from './components/ReportGenerator';
+import LandingPage from './pages/LandingPage';
+import WorkflowBuilder from './pages/Workflow-builder';
+import ReportGenerator from './pages/ReportGenerator';
 const App = () => {
 
   return (
