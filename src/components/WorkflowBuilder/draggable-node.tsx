@@ -13,107 +13,78 @@ import {
   Linkedin,
   Users,
   BarChart,
-  LineChart
+  LineChart,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-const nodeConfig = {
-  input: { 
-    color: 'bg-orange-50', 
-    hoverColor: 'hover:bg-orange-100', 
-    borderColor: 'border-orange-200',
-    iconColor: 'text-orange-500',
-    icon: <ArrowUpToLine className="h-4 w-4" /> 
+const nodeTypes = {
+  input: {
+    icon: ArrowUpToLine,
+    description: 'Input node for receiving data into your workflow'
   },
-  output: { 
-    color: 'bg-rose-50', 
-    hoverColor: 'hover:bg-rose-100',
-    borderColor: 'border-rose-200', 
-    iconColor: 'text-rose-500',
-    icon: <ArrowDownToLine className="h-4 w-4" /> 
+  output: {
+    icon: ArrowDownToLine,
+    description: 'Output node for final workflow results'
   },
-  askAI: { 
-    color: 'bg-purple-50', 
-    hoverColor: 'hover:bg-purple-100',
-    borderColor: 'border-purple-200', 
-    iconColor: 'text-purple-500',
-    icon: <Bot className="h-4 w-4" /> 
+  askAI: {
+    icon: Bot,
+    description: 'AI-powered node for natural language processing'
   },
-  combineLists: { 
-    color: 'bg-green-50', 
-    hoverColor: 'hover:bg-green-100',
-    borderColor: 'border-green-200', 
-    iconColor: 'text-green-500',
-    icon: <ListTree className="h-4 w-4" /> 
+  combineLists: {
+    icon: ListTree,
+    description: 'Combine multiple lists into a single list'
   },
-  joinListItems: { 
-    color: 'bg-green-50', 
-    hoverColor: 'hover:bg-green-100',
-    borderColor: 'border-green-200', 
-    iconColor: 'text-green-500',
-    icon: <ListTree className="h-4 w-4" /> 
+  joinListItems: {
+    icon: ListTree,
+    description: 'Join list items with a specified separator'
   },
-  generateFile: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <ClipboardList className="h-4 w-4" /> 
+  generateFile: {
+    icon: ClipboardList,
+    description: 'Generate files from your workflow data'
   },
-  typeform: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <ClipboardList className="h-4 w-4" /> 
+  typeform: {
+    icon: ClipboardList,
+    description: 'Process Typeform submissions and responses'
   },
-  notes: { 
-    color: 'bg-yellow-50', 
-    hoverColor: 'hover:bg-yellow-100',
-    borderColor: 'border-yellow-200', 
-    iconColor: 'text-yellow-500',
-    icon: <StickyNote className="h-4 w-4" /> 
+  notes: {
+    icon: StickyNote,
+    description: 'Add documentation and notes to your workflow'
   },
-  channel: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <Linkedin className="h-4 w-4" /> 
+  channel: {
+    icon: Linkedin,
+    description: 'Configure social media channel integrations'
   },
-  segment: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <Users className="h-4 w-4" /> 
+  segment: {
+    icon: Users,
+    description: 'Define and manage audience segments'
   },
-  metric: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <BarChart className="h-4 w-4" /> 
+  metric: {
+    icon: BarChart,
+    description: 'Track and analyze key metrics'
   },
-  analysis: { 
-    color: 'bg-blue-50', 
-    hoverColor: 'hover:bg-blue-100',
-    borderColor: 'border-blue-200', 
-    iconColor: 'text-blue-500',
-    icon: <LineChart className="h-4 w-4" /> 
+  analysis: {
+    icon: LineChart,
+    description: 'Perform data analysis and visualization'
   },
-  default: { 
-    color: 'bg-gray-50', 
-    hoverColor: 'hover:bg-gray-100',
-    borderColor: 'border-gray-200', 
-    iconColor: 'text-gray-500',
-    icon: <Box className="h-4 w-4" /> 
+  default: {
+    icon: Box,
+    description: 'Custom node type'
   }
 };
 
 export const DraggableNode = ({ type, label }) => {
   const dispatch = useDispatch();
   const getNodeId = useNodeId();
-  const config = nodeConfig[type] || nodeConfig.default;
+  
+  const nodeType = nodeTypes[type] || nodeTypes.default;
+  const Icon = nodeType.icon;
 
   const handleDragStart = (event) => {
     event.dataTransfer.setData('application/reactflow', JSON.stringify({ type }));
@@ -131,33 +102,38 @@ export const DraggableNode = ({ type, label }) => {
   };
 
   return (
-    <div
-      className={`
-        ${config.color} 
-        ${config.hoverColor} 
-        transition-all 
-        duration-200 
-        cursor-grab 
-        w-full 
-        rounded-lg 
-        flex 
-        items-center 
-        gap-2.5 
-        font-medium 
-        select-none 
-        p-2.5 
-        border
-        ${config.borderColor}
-        shadow-sm
-      `}
-      onDragStart={handleDragStart}
-      onClick={handleClick}
-      draggable
-    >
-      <div className={`flex h-6 w-6 items-center justify-center rounded-md ${config.color} ${config.iconColor}`}>
-        {config.icon}
-      </div>
-      <span className="text-sm text-gray-700">{label}</span>
-    </div>
+    <TooltipProvider delayDuration={300}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            className={cn(
+              'w-full px-3 py-2 h-auto justify-start gap-2.5',
+              'border rounded-lg shadow-sm',
+              'transition-all duration-200',
+              'bg-white hover:bg-gray-50/50',
+              'border-gray-200 hover:border-gray-300'
+            )}
+            onDragStart={handleDragStart}
+            onClick={handleClick}
+            draggable
+          >
+            <div className={cn(
+              'flex items-center justify-center w-6 h-6 rounded-md',
+              'bg-gray-50',
+              'text-gray-600'
+            )}>
+              <Icon className="w-4 h-4" />
+            </div>
+            <span className="text-sm font-medium text-gray-700">
+              {label}
+            </span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="max-w-[200px]">
+          <p className="text-sm">{nodeType.description}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
-}; 
+};
