@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Button } from '@/components/ui/button';
-import { Sidebar } from '../components/ReportGenerator/sidebar';
+import { Sidebar } from '../components/ReportGenerator/side-bar';
 import { DraggableElement } from '../components/ReportGenerator/draggable-element';
 import { Menu, X, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
