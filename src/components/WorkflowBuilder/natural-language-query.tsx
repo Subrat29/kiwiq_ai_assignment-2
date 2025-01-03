@@ -25,7 +25,7 @@ export function NaturalLanguageQuery({
       <Textarea
         value={localQuery}
         onChange={(e) => setLocalQuery(e.target.value)}
-        placeholder="Enter your query here. E.g., 'Show me LinkedIn performance for enterprise customers'"
+        placeholder="Enter your query here. E.g., 'Show me Employee Satisfaction Survey Analysis'"
         rows={5}
       />
       <Button onClick={handleSubmit}>

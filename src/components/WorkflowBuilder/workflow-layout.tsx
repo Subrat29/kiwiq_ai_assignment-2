@@ -62,7 +62,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   const [workflows, setWorkflows] = React.useState<Workflow[]>([
     {
       id: "1",
-      name: "Workspace 1",
+      name: "Workflow 1",
       lastModified: new Date(),
       nodes: [],
       edges: [],
@@ -247,14 +247,19 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
               </TooltipTrigger>
               <TooltipContent>Save</TooltipContent>
             </Tooltip>
-            <Button
-              size="sm"
-              className="h-8"
-              onClick={() => navigate("/report-generator")}
-            >
-              <Eye className="mr-1 h-3 w-3" />
-              <span className="hidden sm:inline">Preview Report</span>
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+              <Button
+                size="sm"
+                className="h-8"
+                onClick={() => navigate("/report-generator")}
+              >
+                <Eye className="mr-1 h-3 w-3" />
+                <span className="hidden sm:inline">Preview Report</span>
+              </Button>
+              </TooltipTrigger>
+              <TooltipContent>Preview Report</TooltipContent>
+            </Tooltip>
           </div>
         </header>
         <div className="flex flex-1 overflow-hidden">
