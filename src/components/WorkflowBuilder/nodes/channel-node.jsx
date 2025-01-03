@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const ChannelNode = ({ id, data }) => {
-  // Define outputs consistently with other nodes
   const outputs = [
     {
       id: "connections",
@@ -36,7 +35,10 @@ const ChannelNode = ({ id, data }) => {
               <span className="text-sm font-medium text-gray-900">
                 Connection Status
               </span>
-              <Badge variant="outline" className="text-blue-500 border-blue-200 bg-blue-50">
+              <Badge
+                variant="outline"
+                className="text-blue-500 border-blue-200 bg-blue-50"
+              >
                 Ready
               </Badge>
             </div>
@@ -52,7 +54,7 @@ const ChannelNode = ({ id, data }) => {
             </div>
           </div>
         </Card>
-        
+
         <div className="text-xs text-gray-500">
           Connect outputs to analyze LinkedIn metrics
         </div>

@@ -2,11 +2,11 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addNode } from '@/redux/flowSlice';
 import { useNodeId } from '@/hooks/useNodeId';
-import { 
-  ArrowUpToLine, 
-  ArrowDownToLine, 
-  Bot, 
-  ListTree, 
+import {
+  ArrowUpToLine,
+  ArrowDownToLine,
+  Bot,
+  ListTree,
   ClipboardList,
   StickyNote,
   Box,
@@ -82,7 +82,7 @@ const nodeTypes = {
 export const DraggableNode = ({ type, label }) => {
   const dispatch = useDispatch();
   const getNodeId = useNodeId();
-  
+
   const nodeType = nodeTypes[type] || nodeTypes.default;
   const Icon = nodeType.icon;
 

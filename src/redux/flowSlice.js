@@ -1,35 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import {
   applyNodeChanges,
   applyEdgeChanges,
   addEdge as reactFlowAddEdge,
-  Node,
-  Edge,
-  NodeChange,
-  EdgeChange,
-  Connection,
   MarkerType,
 } from 'reactflow'
 import { defaultWorkflow } from '../config/default-workflow'
 
-interface NodeIDs {
-  input: number
-  output: number
-}
-
-interface FlowState {
-  nodes: Node[]
-  edges: Edge[]
-  nodeIDs: NodeIDs
-  workflowName: string
-}
-
-const initialNodeIDs: NodeIDs = {
+const initialNodeIDs = {
   input: 0,
   output: 0,
 }
 
-const initialState: FlowState = {
+const initialState = {
   nodes: defaultWorkflow.nodes,
   edges: defaultWorkflow.edges,
   nodeIDs: { ...initialNodeIDs },
@@ -40,13 +23,13 @@ export const flowSlice = createSlice({
   name: 'flow',
   initialState,
   reducers: {
-    addNode: (state, action: PayloadAction<Node>) => {
+    addNode: (state, action) => {
       state.nodes.push(action.payload)
     },
-    updateNodes: (state, action: PayloadAction<NodeChange[]>) => {
+    updateNodes: (state, action) => {
       state.nodes = applyNodeChanges(action.payload, state.nodes)
     },
-    addEdge: (state, action: PayloadAction<Connection>) => {
+    addEdge: (state, action) => {
       const newEdge = {
         ...action.payload,
         id: `${action.payload.source}-${action.payload.target}`,
@@ -60,14 +43,10 @@ export const flowSlice = createSlice({
       }
       state.edges = reactFlowAddEdge(newEdge, state.edges)
     },
-    updateEdges: (state, action: PayloadAction<EdgeChange[]>) => {
+    updateEdges: (state, action) => {
       state.edges = applyEdgeChanges(action.payload, state.edges)
     },
-    updateNodeField: (state, action: PayloadAction<{
-      nodeId: string
-      fieldName: string
-      fieldValue: any
-    }>) => {
+    updateNodeField: (state, action) => {
       const { nodeId, fieldName, fieldValue } = action.payload
       const node = state.nodes.find(node => node.id === nodeId)
       if (node) {
@@ -77,7 +56,7 @@ export const flowSlice = createSlice({
         }
       }
     },
-    incrementNodeId: (state, action: PayloadAction<keyof NodeIDs>) => {
+    incrementNodeId: (state, action) => {
       const type = action.payload
       state.nodeIDs[type] = (state.nodeIDs[type] || 0) + 1
     },
@@ -87,13 +66,13 @@ export const flowSlice = createSlice({
       state.nodeIDs = { ...initialNodeIDs }
       state.workflowName = defaultWorkflow.name
     },
-    deleteNode: (state, action: PayloadAction<string>) => {
+    deleteNode: (state, action) => {
       state.nodes = state.nodes.filter(node => node.id !== action.payload)
       state.edges = state.edges.filter(
         edge => edge.source !== action.payload && edge.target !== action.payload
       )
     },
-    updateWorkflowName: (state, action: PayloadAction<string>) => {
+    updateWorkflowName: (state, action) => {
       state.workflowName = action.payload
     }
   },
@@ -111,10 +90,9 @@ export const {
   updateWorkflowName,
 } = flowSlice.actions
 
-export const selectNodes = (state: { flow: FlowState }) => state.flow.nodes
-export const selectEdges = (state: { flow: FlowState }) => state.flow.edges
-export const selectNodeIDs = (state: { flow: FlowState }) => state.flow.nodeIDs
-export const selectWorkflowName = (state: { flow: FlowState }) => state.workflowName
+export const selectNodes = (state) => state.flow.nodes
+export const selectEdges = (state) => state.flow.edges
+export const selectNodeIDs = (state) => state.flow.nodeIDs
+export const selectWorkflowName = (state) => state.workflowName
 
 export default flowSlice.reducer
-

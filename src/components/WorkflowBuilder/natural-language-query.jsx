@@ -3,16 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 
-
-interface NaturalLanguageQueryProps {
-  query: string;
-  setQuery: (query: string) => void;
-}
-
-export function NaturalLanguageQuery({
-  query,
-  setQuery,
-}: NaturalLanguageQueryProps) {
+export function NaturalLanguageQuery({ query, setQuery }) {
   const [localQuery, setLocalQuery] = useState(query);
 
   const handleSubmit = () => {
@@ -29,8 +20,8 @@ export function NaturalLanguageQuery({
         rows={5}
       />
       <Button onClick={handleSubmit}>
-      <Play className="mr-1 h-3 w-3" />
-      <span className="hidden sm:inline">Run</span>
+        <Play className="mr-1 h-3 w-3" />
+        <span className="hidden sm:inline">Run</span>
       </Button>
     </div>
   );

@@ -3,13 +3,12 @@ import { WorkflowLayout } from "../components/WorkflowBuilder/workflow-layout"
 import { PipelineUI } from "../components/WorkflowBuilder/pipeline-ui"
 import { NaturalLanguageQuery } from "../components/WorkflowBuilder/natural-language-query"
 import { processNaturalLanguage } from "@/nlp/nlp"
-import { Node, Edge } from 'reactflow'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function WorkflowBuilder() {
-  const [query, setQuery] = useState<string>("")
-  const [workflow, setWorkflow] = useState<{ nodes: Node[]; edges: Edge[] }>({ nodes: [], edges: [] })
+  const [query, setQuery] = useState("")
+  const [workflow, setWorkflow] = useState({ nodes: [], edges: [] })
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -30,7 +29,7 @@ export default function WorkflowBuilder() {
     }
   }, [query])
 
-  const updateWorkflowFromDiagram = (updatedWorkflow: { nodes: Node[]; edges: Edge[] }) => {
+  const updateWorkflowFromDiagram = (updatedWorkflow) => {
     setWorkflow(updatedWorkflow)
     setQuery("Updated based on diagram changes")
   }

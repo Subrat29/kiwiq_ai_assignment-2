@@ -1,24 +1,13 @@
-"use client";
-
 import { useCallback, useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactFlow, {
   Controls,
   Background,
-  Connection,
-  Edge,
-  Node,
-  Panel,
   MarkerType,
   ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { Maximize2, Minimize2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { nodeTypes } from "./nodes";
-import { TemplateOverview } from "./template-overview";
 import {
   selectNodes,
   selectEdges,
@@ -38,8 +27,8 @@ export const PipelineUI = () => {
   const edges = useSelector(selectEdges);
   const getNodeId = useNodeId();
 
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
+  const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [gridSize, setGridSize] = useState(20);
 
@@ -58,19 +47,19 @@ export const PipelineUI = () => {
   );
 
   const onConnect = useCallback(
-    (connection: Connection) => {
+    (connection) => {
       dispatch(addEdge(connection));
     },
     [dispatch]
   );
 
-  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+  const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
   const onDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
+    (event) => {
       event.preventDefault();
 
       if (!reactFlowInstance || !reactFlowWrapper.current) return;
@@ -87,7 +76,7 @@ export const PipelineUI = () => {
         y: event.clientY - reactFlowBounds.top,
       });
 
-      const newNode: Node = {
+      const newNode = {
         id: getNodeId(type),
         type,
         position,
@@ -97,11 +86,6 @@ export const PipelineUI = () => {
       dispatch(addNode(newNode));
     },
     [reactFlowInstance, dispatch, getNodeId]
-  );
-
-  const toggleFullScreen = useCallback(
-    () => setIsFullScreen((prev) => !prev),
-    []
   );
 
   useEffect(() => {

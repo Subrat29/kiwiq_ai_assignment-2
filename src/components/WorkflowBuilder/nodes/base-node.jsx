@@ -162,7 +162,7 @@ const BaseNode = ({
           </div>
           <Button
             variant="ghost"
-            size="icon"
+            size="icon" 
             className="h-6 w-6 text-gray-400 hover:text-gray-600 transition-colors"
             onClick={handleDelete}
           >

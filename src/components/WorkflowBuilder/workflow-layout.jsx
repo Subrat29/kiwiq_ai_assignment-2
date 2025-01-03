@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -50,16 +48,8 @@ import { useNodeId } from "@/hooks/useNodeId";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-interface Workflow {
-  id: string;
-  name: string;
-  lastModified: Date;
-  nodes: any[];
-  edges: any[];
-}
-
-export function WorkflowLayout({ children }: { children: React.ReactNode }) {
-  const [workflows, setWorkflows] = React.useState<Workflow[]>([
+export function WorkflowLayout({ children }) {
+  const [workflows, setWorkflows] = React.useState([
     {
       id: "1",
       name: "Workflow 1",
@@ -75,12 +65,11 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
   const [isRenameDialogOpen, setIsRenameDialogOpen] = React.useState(false);
   const [newWorkflowName, setNewWorkflowName] = React.useState("");
 
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-
+  const scrollContainerRef = React.useRef(null);
   const workflowName = useSelector(selectWorkflowName);
 
   const createNewWorkflow = () => {
-    const newWorkflow: Workflow = {
+    const newWorkflow = {
       id: `${workflows.length + 1}`,
       name: `Workflow ${workflows.length + 1}`,
       lastModified: new Date(),
@@ -99,7 +88,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     }, 100);
   };
 
-  const navigateWorkflow = (direction: "next" | "prev") => {
+  const navigateWorkflow = (direction) => {
     const currentIndex = workflows.findIndex((w) => w.id === activeWorkflow.id);
     let newIndex;
 
@@ -125,7 +114,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const deleteWorkflow = (id: string) => {
+  const deleteWorkflow = (id) => {
     const updatedWorkflows = workflows.filter((w) => w.id !== id);
     if (updatedWorkflows.length === 0) {
       createNewWorkflow();
@@ -139,8 +128,8 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const duplicateWorkflow = (workflow: Workflow) => {
-    const newWorkflow: Workflow = {
+  const duplicateWorkflow = (workflow) => {
+    const newWorkflow = {
       ...workflow,
       id: `${workflows.length + 1}`,
       name: `${workflow.name} (Copy)`,
@@ -149,7 +138,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     setWorkflows([...workflows, newWorkflow]);
   };
 
-  const renameWorkflow = (id: string, newName: string) => {
+  const renameWorkflow = (id, newName) => {
     if (!newName.trim()) return;
     const updatedWorkflows = workflows.map((w) =>
       w.id === id ? { ...w, name: newName } : w
@@ -172,7 +161,7 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     { type: "channel", label: "Channel" },
     { type: "segment", label: "Segment" },
     { type: "metric", label: "Metric" },
-    { type: "analysis", label: "Analysis" },
+    { type: "analysis", label: "Analysis" }
   ];
 
   const filteredNodes = nodeTypes.filter((node) =>
@@ -181,8 +170,9 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
 
   const dispatch = useDispatch();
   const getNodeId = useNodeId();
+  const navigate = useNavigate();
 
-  const handleAddNode = (nodeData: { type: string; label: string }) => {
+  const handleAddNode = (nodeData) => {
     const newNode = {
       id: getNodeId(nodeData.type),
       type: nodeData.type,
@@ -191,8 +181,6 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
     };
     dispatch(addNode(newNode));
   };
-
-  const navigate = useNavigate();
 
   return (
     <TooltipProvider>
@@ -249,14 +237,14 @@ export function WorkflowLayout({ children }: { children: React.ReactNode }) {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-              <Button
-                size="sm"
-                className="h-8"
-                onClick={() => navigate("/report-generator")}
-              >
-                <Eye className="mr-1 h-3 w-3" />
-                <span className="hidden sm:inline">Preview Report</span>
-              </Button>
+                <Button
+                  size="sm"
+                  className="h-8"
+                  onClick={() => navigate("/report-generator")}
+                >
+                  <Eye className="mr-1 h-3 w-3" />
+                  <span className="hidden sm:inline">Preview Report</span>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>Preview Report</TooltipContent>
             </Tooltip>

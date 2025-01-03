@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import {
   Collapsible,
@@ -10,17 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ChevronRight } from 'lucide-react'
 import { cn } from "@/lib/utils"
 
-export function NodeCategory({
-  title,
-  count,
-  children,
-  className,
-}: {
-  title: string
-  count: number
-  children: React.ReactNode
-  className?: string
-}) {
+export function NodeCategory({ title, count, children, className }) {
   const [isOpen, setIsOpen] = React.useState(true)
 
   return (
@@ -53,4 +41,3 @@ export function NodeCategory({
     </Collapsible>
   )
 }
-

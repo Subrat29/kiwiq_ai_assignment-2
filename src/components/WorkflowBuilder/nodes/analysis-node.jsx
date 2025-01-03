@@ -4,7 +4,6 @@ import { BaseNode } from "./base-node";
 import { Card } from "@/components/ui/card";
 
 const AnalysisNode = ({ id, data }) => {
-  // Define inputs and outputs consistently with other nodes
   const inputs = [
     {
       id: "metrics",

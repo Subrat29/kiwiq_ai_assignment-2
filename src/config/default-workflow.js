@@ -1,4 +1,4 @@
-import { Node, Edge, MarkerType } from "reactflow";
+import { MarkerType } from "reactflow";
 
 export const defaultWorkflow = {
   name: "Employee Satisfaction Survey Analysis",
@@ -54,7 +54,7 @@ Here's How It Works:
 • Feel free to customize the AI prompts to fine-tune and personalize the output!`,
       },
     },
-  ] as Node[],
+  ],
   edges: [
     {
       id: "e1-2a",
@@ -116,5 +116,5 @@ Here's How It Works:
       animated: true,
       markerEnd: { type: MarkerType.Arrow },
     },
-  ] as Edge[],
+  ],
 };

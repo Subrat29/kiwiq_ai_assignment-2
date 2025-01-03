@@ -1,9 +1,7 @@
-import { Node, Edge } from 'reactflow'
-
-export function processNaturalLanguage(query: string): { nodes: Node[], edges: Edge[] } {
+export function processNaturalLanguage(query) {
   const lowercaseQuery = query.toLowerCase()
-  const nodes: Node[] = []
-  const edges: Edge[] = []
+  const nodes = []
+  const edges = []
 
   // Add LinkedIn node
   nodes.push({
@@ -58,4 +56,3 @@ export function processNaturalLanguage(query: string): { nodes: Node[], edges: E
 
   return { nodes, edges }
 }
-
